@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>匿名聊天室</title>
+<link rel="stylesheet" href="./css/style.css">
+</head>
+<body>
+
+<!-- 畫面 A：輸入代號 -->
+<section id="entry-screen" class="screen">
+  <div class="entry-card">
+    <div class="entry-blob entry-blob--a" aria-hidden="true"></div>
+    <div class="entry-blob entry-blob--b" aria-hidden="true"></div>
+
+    <div class="entry-icon">
+      <svg width="44" height="44" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <path d="M4 5.5C4 4.67 4.67 4 5.5 4h13C19.33 4 20 4.67 20 5.5v10c0 .83-.67 1.5-1.5 1.5H9l-4 3.5v-3.5c-.55 0-1-.45-1-1v-10z" fill="#FFFFFF"/>
+        <circle cx="9" cy="10" r="1.3" fill="#FF6F91"/>
+        <circle cx="12.5" cy="10" r="1.3" fill="#FF6F91"/>
+        <circle cx="16" cy="10" r="1.3" fill="#FF6F91"/>
+      </svg>
+    </div>
+
+    <h1 class="heading-font entry-title">匿名聊天室</h1>
+    <p class="entry-subtitle">不用註冊、不用登入<br>輸入一個代號，馬上開始聊天</p>
+
+    <form id="entry-form" class="entry-form" novalidate>
+      <input
+        id="nickname-input"
+        class="nickname-input"
+        type="text"
+        maxlength="20"
+        placeholder="輸入你的代號（最多 20 字）"
+        aria-label="代號"
+        autocomplete="off"
+      >
+      <p id="nickname-error" class="nickname-error" hidden></p>
+      <button type="submit" class="enter-btn heading-font">進入聊天室</button>
+      <p class="entry-footnote">代號可以跟別人重複沒關係，每次重新進來都要再輸入一次喔！</p>
+    </form>
+  </div>
+</section>
+
+<!-- 畫面 B：聊天室 -->
+<section id="chat-screen" class="screen hidden">
+  <header class="chat-header">
+    <button id="leave-btn" class="leave-btn icon-btn" type="button" aria-label="離開聊天室">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M15 6l-6 6 6 6" stroke="#8C7F7A" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      離開
+    </button>
+    <div class="heading-font chat-title">匿名聊天室</div>
+    <button id="online-toggle-btn" class="online-toggle-btn" type="button" aria-label="顯示線上名單">
+      <span class="online-dot" aria-hidden="true"></span>
+      線上 <span id="online-count-mobile">0</span> 人
+    </button>
+  </header>
+
+  <div id="disconnect-banner" class="disconnect-banner hidden" role="status">連線中斷，正在重新連線...</div>
+
+  <div class="chat-body">
+    <div class="chat-column">
+      <div id="message-list" class="message-list" aria-live="polite"></div>
+
+      <button id="jump-to-bottom-btn" class="jump-to-bottom-btn hidden" type="button">
+        有新訊息，點擊回到底部 ↓
+      </button>
+
+      <div class="input-area">
+        <div id="drop-zone" class="input-box">
+          <textarea
+            id="draft-input"
+            class="msg-input"
+            placeholder="輸入訊息，Enter 送出、Shift+Enter 換行"
+            rows="1"
+          ></textarea>
+          <input id="image-file-input" type="file" accept="image/*" class="visually-hidden">
+          <button id="image-btn" class="icon-btn" type="button" aria-label="上傳圖片">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="3" stroke="#8C7F7A" stroke-width="2"/><circle cx="8.5" cy="10" r="1.5" fill="#8C7F7A"/><path d="M4 16l5-4 4 3 3-3 4 4" stroke="#8C7F7A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <button id="send-btn" class="send-btn" type="button" aria-label="送出訊息">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M3 20l18-8L3 4l0 7 12 1-12 1z" fill="#FFFFFF"/></svg>
+          </button>
+        </div>
+        <p class="input-hint">也可以直接拖曳圖片，或用 Ctrl+V 貼上剪貼簿裡的圖片。想示範「傳送失敗」，輸入文字 fail 再送出看看。</p>
+      </div>
+    </div>
+
+    <aside id="online-sidebar" class="online-sidebar">
+      <div class="online-sidebar-header">
+        <span class="online-dot" aria-hidden="true"></span>
+        <span class="heading-font">線上 <span id="online-count-desktop">0</span> 人</span>
+      </div>
+      <ul id="online-list" class="online-list"></ul>
+    </aside>
+  </div>
+
+  <div id="online-overlay" class="online-overlay hidden">
+    <div id="online-panel" class="online-panel">
+      <div class="online-panel-header">
+        <span class="heading-font">線上名單</span>
+        <button id="online-close-btn" class="online-close-btn" type="button" aria-label="關閉線上名單">✕</button>
+      </div>
+      <ul id="online-list-mobile" class="online-list"></ul>
+    </div>
+  </div>
+</section>
+
+<script type="module" src="./js/main.js"></script>
+</body>
+</html>
