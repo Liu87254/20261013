@@ -70,6 +70,13 @@ web_modules/
 .env.*
 !.env.example
 
+# Supabase 金鑰 - service_role key 絕對不能 commit 進 git（見 docs/architecture.md 第 8 節）
+# anon public key 設計上是公開的，放在 js/config.js，可以正常 commit
+*service_role*
+*service-role*
+js/config.local.js
+js/secrets.js
+
 # parcel-bundler cache (https://parceljs.org/)
 .cache
 .parcel-cache
