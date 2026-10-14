@@ -1,14 +1,11 @@
 // 程式進入點：把畫面（ui.js）和聊天服務（chat-service.js 的其中一份實作）串接起來。
 //
-// 階段一只有這一行會指到「本機模擬」的實作：
-import { MockChatService } from "./mock-chat-service.js";
-// 階段二接上 Supabase 時，改成：
-// import { SupabaseChatService } from "./supabase-chat-service.js";
-// 下面全部程式碼都不需要再改。
+// 階段二：接上 Supabase 的實作。
+import { SupabaseChatService } from "./supabase-chat-service.js";
 
 import { ChatUI } from "./ui.js";
 
-const chatService = new MockChatService();
+const chatService = new SupabaseChatService();
 const ui = new ChatUI();
 
 let currentNickname = null;

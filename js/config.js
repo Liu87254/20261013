@@ -8,5 +8,5 @@
 // 怎麼拿到這兩個值：登入 supabase.com → 打開你的專案 → 左側選單
 // Settings → API → 複製 "Project URL" 和 "Project API keys" 裡的 "anon public"。
 
-export const SUPABASE_URL = "請貼上你的 Project URL（例如 https://xxxx.supabase.co）";
-export const SUPABASE_ANON_KEY = "請貼上你的 anon public key";
+export const SUPABASE_URL = "https://slotanxactksrwbrbjqa.supabase.co";
+export const SUPABASE_ANON_KEY = "sb_publishable_2JcVGQHzriIQQ-iV-kGP0w_3vmXkScD";
