@@ -34,3 +34,12 @@
 - 前端要用什麼語言和框架
 - Supabase 要怎麼設定
 - 金鑰怎麼產生、要放在哪裡
+
+## 新增功能
+
+除了基本的聊天室功能以外，另外做了這些：
+
+- **分頁標題顯示未讀數（A 級）**：切到別的分頁、視窗時，如果聊天室收到其他人的新訊息，分頁標題會顯示未讀則數（例如 `(3) 匿名聊天室`），切回來就會消失。只在自己的瀏覽器裡看得到，不會同步給別人。實作在 `js/main.js`。
+- **編輯自己的訊息，即時同步給所有人（B 級）**：自己送出的訊息在 5 分鐘內可以編輯，編輯後會透過 Supabase Realtime 的 `UPDATE` 事件即時推播給聊天室裡所有人，大家都會看到內容更新、並顯示「（已編輯）」，不用重新整理頁面。實作在 `js/supabase-chat-service.js` 的 `editMessage()`，時間限制由 `supabase/schema.sql` 的 RLS 規則和 trigger 在資料庫層級強制執行。
+- **用 Supabase Storage 傳圖片（C 級）**：訊息可以夾帶圖片，圖片檔案存在 Supabase Storage，訊息只存圖片網址。前端（`js/supabase-chat-service.js` 的 `sendImage()`）和資料庫端（`supabase/schema.sql` 的 Storage bucket 設定）都有檢查檔案類型（只接受 png/jpeg/gif/webp）和大小（5MB 上限）。
+- **資料庫層級限制發送頻率（C 級）**：同一個身分 10 秒內最多送 5 則訊息，超過會被資料庫擋下來，不是只靠前端擋。實作在 `supabase/schema.sql` 的 `enforce_message_rate_limit` trigger。

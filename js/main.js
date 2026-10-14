@@ -12,6 +12,21 @@ let currentNickname = null;
 const messagesById = new Map();
 const editingIds = new Set();
 
+// 新增功能（A 級）：分頁不在前景時，收到新訊息會在分頁標題顯示未讀數，只在自己這個瀏覽器看得到。
+const BASE_TITLE = document.title;
+let unreadCount = 0;
+
+function updateTitle() {
+  document.title = unreadCount > 0 ? `(${unreadCount}) ${BASE_TITLE}` : BASE_TITLE;
+}
+
+document.addEventListener("visibilitychange", () => {
+  if (!document.hidden) {
+    unreadCount = 0;
+    updateTitle();
+  }
+});
+
 function withEditingFlag(message) {
   return { ...message, editing: editingIds.has(message.id) };
 }
@@ -42,6 +57,11 @@ const handlers = {
 chatService.onMessage((message) => {
   messagesById.set(message.id, message);
   ui.appendMessage(withEditingFlag(message), currentNickname, handlers);
+
+  if (document.hidden && currentNickname && message.type === "chat" && !message.isSelf) {
+    unreadCount++;
+    updateTitle();
+  }
 });
 
 chatService.onMessageUpdated((message) => {
@@ -95,6 +115,8 @@ ui.leaveBtn.addEventListener("click", () => {
   messagesById.clear();
   editingIds.clear();
   currentNickname = null;
+  unreadCount = 0;
+  updateTitle();
   ui.showEntryScreen();
 });
 
