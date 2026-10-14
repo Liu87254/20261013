@@ -317,7 +317,8 @@ Supabase 和 GitHub Pages 都有免費方案，但免費額度可能隨官方政
 │   └── schema.sql           — 階段二用：建立資料表、RLS 規則、Storage 設定的 SQL，貼到 Supabase 後台 SQL Editor 執行
 ├── docs/
 │   ├── requirements.md      — 需求說明（已存在）
-│   └── architecture.md      — 這份文件
+│   ├── architecture.md      — 這份文件
+│   └── design.md            — `/design` 階段決定的視覺風格與畫面細節，對應第 7 節「畫面清單」
 └── README.md                — 專案簡介、怎麼本機打開測試
 ```
 
