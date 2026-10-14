@@ -59,6 +59,13 @@ export class SupabaseChatService extends ChatService {
   }
 
   sendImage(file) {
+    const allowedTypes = ["image/png", "image/jpeg", "image/gif", "image/webp"];
+    const maxBytes = 5 * 1024 * 1024; // 5MB，跟 supabase/schema.sql 裡 Storage bucket 的設定一致
+    if (!allowedTypes.includes(file.type) || file.size > maxBytes) {
+      this._emitLocalFailure({ kind: "image", file });
+      return;
+    }
+
     const path = `${this.userId}/${Date.now()}-${file.name}`;
     this.client.storage
       .from("chat-images")
