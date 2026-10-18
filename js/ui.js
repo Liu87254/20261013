@@ -121,6 +121,17 @@ export class ChatUI {
     this.jumpToBottomBtn.classList.toggle("hidden", !show);
   }
 
+  // 送出後短暫鎖住輸入框和送出鈕，減少連點誤觸（見 docs/architecture.md 第 9.1 節）。
+  lockSendBriefly(duration = 400) {
+    this.draftInput.disabled = true;
+    this.sendBtn.disabled = true;
+    setTimeout(() => {
+      this.draftInput.disabled = false;
+      this.sendBtn.disabled = false;
+      this.draftInput.focus();
+    }, duration);
+  }
+
   isScrolledNearBottom() {
     const el = this.messageList;
     return el.scrollHeight - el.scrollTop - el.clientHeight < 40;

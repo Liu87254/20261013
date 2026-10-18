@@ -130,6 +130,7 @@ function sendDraft() {
   if (!text.trim()) return;
   chatService.sendMessage(text);
   ui.draftInput.value = "";
+  ui.lockSendBriefly();
 }
 
 ui.draftInput.addEventListener("keydown", (e) => {
