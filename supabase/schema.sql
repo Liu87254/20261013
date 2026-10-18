@@ -23,12 +23,14 @@ create table if not exists public.messages (
 alter table public.messages enable row level security;
 
 -- 3. 任何人（包含匿名登入的使用者）都可以讀取所有訊息，讓新加入的人能看到完整歷史。
+drop policy if exists "anyone can read messages" on public.messages;
 create policy "anyone can read messages"
   on public.messages for select
   using (true);
 
 -- 4. 只有「登入中的使用者」可以新增訊息，而且這則訊息的 author_id 必須是自己的身分
 --    （不能冒充別人送訊息）。匿名登入的使用者在 Supabase 裡也算是「登入中」。
+drop policy if exists "authenticated users can insert their own messages" on public.messages;
 create policy "authenticated users can insert their own messages"
   on public.messages for insert
   to authenticated
@@ -37,6 +39,7 @@ create policy "authenticated users can insert their own messages"
 -- 5. 只有「訊息原本的作者」，而且「送出後 5 分鐘內」，才能修改這則訊息。
 --    這一條是真正擋住「偽造編輯別人訊息」或「超過時間還硬改」的關鍵，
 --    前端畫面上的「編輯」按鈕只是方便使用者，真正的把關在這裡。
+drop policy if exists "authors can edit their own recent messages" on public.messages;
 create policy "authors can edit their own recent messages"
   on public.messages for update
   to authenticated
@@ -112,10 +115,12 @@ on conflict (id) do update set
   allowed_mime_types = excluded.allowed_mime_types,
   file_size_limit = excluded.file_size_limit;
 
+drop policy if exists "anyone can view chat images" on storage.objects;
 create policy "anyone can view chat images"
   on storage.objects for select
   using (bucket_id = 'chat-images');
 
+drop policy if exists "authenticated users can upload chat images" on storage.objects;
 create policy "authenticated users can upload chat images"
   on storage.objects for insert
   to authenticated
